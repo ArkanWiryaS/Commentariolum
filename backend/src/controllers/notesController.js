@@ -44,10 +44,10 @@ export async function updateNote(req, res) {
   }
 }
 
-export function deleteNote(req, res) {
+export async function deleteNote(req, res) {
   try {
     const deletedNote = await Note.findByIdAndDelete(req.params.id);
-    if (!deletedNote)  {
+    if (!deletedNote) {
       return res.status(404).json({ message: "Note not found" });
     }
     res.json({ message: "Note deleted successfully" });
@@ -55,3 +55,4 @@ export function deleteNote(req, res) {
     console.error("Error in deleteNote Controller", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
+}
