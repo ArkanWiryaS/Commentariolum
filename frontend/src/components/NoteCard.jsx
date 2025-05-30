@@ -4,6 +4,8 @@ import {
   CalendarIcon,
   EyeIcon,
   HeartIcon,
+  BookOpenIcon,
+  ClockIcon,
 } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router";
@@ -47,22 +49,22 @@ const NoteCard = ({ note, setNotes }) => {
     return content.slice(0, maxLength) + "...";
   };
 
-  const getRandomGradient = () => {
-    const gradients = [
-      "from-purple-500/5 to-pink-500/5 border-purple-200/20",
-      "from-blue-500/5 to-cyan-500/5 border-blue-200/20",
-      "from-green-500/5 to-emerald-500/5 border-green-200/20",
-      "from-orange-500/5 to-red-500/5 border-orange-200/20",
-      "from-indigo-500/5 to-purple-500/5 border-indigo-200/20",
-      "from-teal-500/5 to-green-500/5 border-teal-200/20",
+  const getCardVariant = () => {
+    const variants = [
+      "variant-1",
+      "variant-2",
+      "variant-3",
+      "variant-4",
+      "variant-5",
+      "variant-6",
     ];
-    const selected =
-      gradients[Math.abs(note._id.charCodeAt(0)) % gradients.length];
-    const [gradient, border] = selected.split(" border-");
-    return { gradient, border };
+    return variants[Math.abs(note._id.charCodeAt(0)) % variants.length];
   };
 
-  const { gradient, border } = getRandomGradient();
+  const getWordCount = () => note.content.split(" ").length;
+  const getReadingTime = () => Math.ceil(getWordCount() / 200);
+
+  const variant = getCardVariant();
 
   return (
     <Link
@@ -71,28 +73,47 @@ const NoteCard = ({ note, setNotes }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div
+      <article
         className={`
-        relative overflow-hidden bg-gradient-to-br ${gradient} 
-        bg-base-100 border border-${border} rounded-2xl p-6 
-        transform transition-all duration-500 ease-out
-        hover:scale-105 hover:shadow-2xl hover:shadow-primary/20
-        hover:border-primary/30 hover:-translate-y-2
+        relative overflow-hidden 
+        bg-base-100 hover:bg-base-200/50
+        border border-base-content/10 hover:border-primary/30
+        rounded-2xl p-6
+        shadow-md hover:shadow-xl hover:shadow-primary/10
+        transform transition-all duration-300 ease-out
+        hover:scale-[1.02] hover:-translate-y-1
         ${isDeleting ? "opacity-50 scale-95" : ""}
       `}
       >
-        {/* Background Pattern */}
-        <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
-          <div className="w-full h-full bg-gradient-to-br from-primary to-secondary rounded-full blur-3xl"></div>
-        </div>
+        {/* Accent Strip */}
+        <div
+          className={`
+            absolute top-0 left-0 w-full h-1 bg-gradient-to-r 
+            ${variant === "variant-1" ? "from-primary to-secondary" : ""}
+            ${variant === "variant-2" ? "from-secondary to-accent" : ""}
+            ${variant === "variant-3" ? "from-accent to-primary" : ""}
+            ${variant === "variant-4" ? "from-info to-success" : ""}
+            ${variant === "variant-5" ? "from-warning to-error" : ""}
+            ${variant === "variant-6" ? "from-success to-info" : ""}
+            rounded-t-2xl
+          `}
+        ></div>
 
-        {/* Top Actions Bar */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-            <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
-              Note
-            </span>
+        {/* Header */}
+        <header className="flex items-start justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-primary/10 text-primary rounded-xl">
+              <BookOpenIcon className="size-4" />
+            </div>
+            <div>
+              <div className="text-xs font-medium text-primary uppercase tracking-wider">
+                Note
+              </div>
+              <div className="flex items-center gap-2 text-xs text-base-content/60 mt-1">
+                <CalendarIcon className="size-3" />
+                <span>{formatDate(note.createdAt)}</span>
+              </div>
+            </div>
           </div>
 
           <div
@@ -106,84 +127,78 @@ const NoteCard = ({ note, setNotes }) => {
           `}
           >
             <button
-              className="p-2 hover:bg-base-200 rounded-lg transition-colors group/btn"
+              className="p-2 hover:bg-base-300 text-base-content/60 hover:text-base-content rounded-lg transition-all duration-200"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                // View action - could navigate to detail
               }}
               title="View note"
             >
-              <EyeIcon className="size-4 text-base-content/60 group-hover/btn:text-primary transition-colors" />
+              <EyeIcon className="size-4" />
             </button>
 
             <button
               className={`
-                p-2 hover:bg-red-50 rounded-lg transition-all duration-200
-                ${isDeleting ? "animate-spin" : ""}
+                p-2 hover:bg-error/10 text-base-content/60 hover:text-error rounded-lg transition-all duration-200
+                ${isDeleting ? "animate-pulse" : ""}
               `}
               onClick={(e) => handleDelete(e, note._id)}
               disabled={isDeleting}
               title="Delete note"
             >
-              <Trash2Icon className="size-4 text-base-content/60 hover:text-red-500 transition-colors" />
+              <Trash2Icon className="size-4" />
             </button>
           </div>
-        </div>
+        </header>
 
-        {/* Note Content */}
-        <div className="space-y-4">
-          {/* Title */}
-          <h3 className="text-xl font-bold text-base-content leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+        {/* Content */}
+        <main className="space-y-4">
+          <h3 className="text-xl font-bold text-base-content leading-tight line-clamp-2 group-hover:text-primary transition-colors duration-300">
             {note.title}
           </h3>
 
-          {/* Content Preview */}
-          <p className="text-base-content/70 text-sm leading-relaxed line-clamp-4">
+          <p className="text-base-content/70 text-sm leading-relaxed line-clamp-3">
             {truncateContent(note.content)}
           </p>
+        </main>
 
-          {/* Stats & Meta */}
-          <div className="flex items-center justify-between pt-4 border-t border-base-content/10">
-            <div className="flex items-center gap-2 text-xs text-base-content/60">
-              <CalendarIcon className="size-3" />
-              <span>{formatDate(note.createdAt)}</span>
+        {/* Footer */}
+        <footer className="flex items-center justify-between pt-4 mt-4 border-t border-base-content/10">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1 text-xs text-base-content/60">
+              <span className="font-medium">{getWordCount()}</span>
+              <span>words</span>
             </div>
-
-            <div className="flex items-center gap-3">
-              {/* Word Count */}
-              <div className="flex items-center gap-1 text-xs text-base-content/50">
-                <span>{note.content.split(" ").length} words</span>
-              </div>
-
-              {/* Read More Indicator */}
-              <div
-                className={`
-                flex items-center gap-1 text-xs font-medium text-primary
-                transition-all duration-300
-                ${
-                  isHovered
-                    ? "translate-x-0 opacity-100"
-                    : "translate-x-2 opacity-0"
-                }
-              `}
-              >
-                <span>Read more</span>
-                <PenSquareIcon className="size-3" />
-              </div>
+            <div className="flex items-center gap-1 text-xs text-base-content/60">
+              <ClockIcon className="size-3" />
+              <span>{getReadingTime()} min</span>
             </div>
           </div>
-        </div>
 
-        {/* Hover Shine Effect */}
+          <div
+            className={`
+            flex items-center gap-1 text-xs font-semibold text-primary
+            transition-all duration-300
+            ${
+              isHovered
+                ? "translate-x-0 opacity-100"
+                : "translate-x-3 opacity-0"
+            }
+          `}
+          >
+            <span>Read more</span>
+            <PenSquareIcon className="size-3" />
+          </div>
+        </footer>
+
+        {/* Hover Glow Effect */}
         <div
           className={`
-          absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
-          transform transition-transform duration-1000
-          ${isHovered ? "translate-x-full" : "-translate-x-full"}
+          absolute inset-0 bg-primary/5 rounded-2xl
+          opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none
         `}
         ></div>
-      </div>
+      </article>
     </Link>
   );
 };

@@ -130,7 +130,7 @@ const Navbar = () => {
               {/* New note button */}
               <Link
                 to="/create"
-                className="btn btn-primary gap-3 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group px-6 py-3 rounded-2xl border-2 border-primary/20 hover:border-primary/40"
+                className="btn btn-primary gap-3 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group px-6 py-3 rounded-xl border-2 border-primary/20 hover:border-primary/40"
               >
                 <div className="relative">
                   <PlusIcon className="size-5 group-hover:rotate-90 transition-transform duration-300" />

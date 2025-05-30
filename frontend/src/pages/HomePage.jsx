@@ -259,7 +259,7 @@ const HomePage = () => {
 
                     <Link
                       to="/create"
-                      className="btn btn-primary btn-lg gap-3 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group"
+                      className="btn btn-primary btn-lg gap-3 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group rounded-xl"
                     >
                       <PlusIcon className="size-5 group-hover:rotate-90 transition-transform duration-300" />
                       New Note
@@ -272,14 +272,14 @@ const HomePage = () => {
               </div>
 
               {/* Filter/Sort Options */}
-              <div className="flex flex-wrap items-center justify-between gap-4 p-6 bg-base-100/30 backdrop-blur-sm rounded-2xl border border-base-content/10">
+              <div className="flex flex-wrap items-center justify-between gap-4 p-6 bg-base-100/30 backdrop-blur-sm rounded-xl border border-base-content/10">
                 <div className="flex items-center gap-4">
                   <span className="text-sm font-medium text-base-content/70">
                     Sort by:
                   </span>
                   <div className="flex gap-2">
                     <button
-                      className={`btn btn-sm transition-all duration-200 ${
+                      className={`btn btn-sm transition-all duration-200 rounded-xl ${
                         sortBy === "latest"
                           ? "btn-primary"
                           : "btn-ghost hover:btn-outline hover:btn-primary"
@@ -289,7 +289,7 @@ const HomePage = () => {
                       Latest
                     </button>
                     <button
-                      className={`btn btn-sm transition-all duration-200 ${
+                      className={`btn btn-sm transition-all duration-200 rounded-xl ${
                         sortBy === "oldest"
                           ? "btn-primary"
                           : "btn-ghost hover:btn-outline hover:btn-primary"
@@ -299,7 +299,7 @@ const HomePage = () => {
                       Oldest
                     </button>
                     <button
-                      className={`btn btn-sm transition-all duration-200 ${
+                      className={`btn btn-sm transition-all duration-200 rounded-xl ${
                         sortBy === "a-z"
                           ? "btn-primary"
                           : "btn-ghost hover:btn-outline hover:btn-primary"
