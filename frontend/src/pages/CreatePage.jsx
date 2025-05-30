@@ -210,8 +210,6 @@ const CreatePage = () => {
                           <span>Create Note</span>
                         </>
                       )}
-
-                      {/* Button Shine Effect */}
                     </button>
                   </div>
                 </div>
