@@ -12,7 +12,12 @@ import { Link } from "react-router";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-const NoteCard = ({ note, setNotes }) => {
+const NoteCard = ({
+  note,
+  setNotes,
+  viewMode = "grid",
+  isSelected = false,
+}) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -66,6 +71,117 @@ const NoteCard = ({ note, setNotes }) => {
 
   const variant = getCardVariant();
 
+  // List view layout
+  if (viewMode === "list") {
+    return (
+      <Link
+        to={`/note/${note._id}`}
+        className="group block"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <article
+          className={`
+          relative overflow-hidden 
+          bg-base-100 hover:bg-base-200/50
+          border border-base-content/10 hover:border-primary/30
+          rounded-xl p-6
+          shadow-sm hover:shadow-md hover:shadow-primary/10
+          transform transition-all duration-300 ease-out
+          hover:scale-[1.01]
+          ${isDeleting ? "opacity-50 scale-95" : ""}
+          ${isSelected ? "ring-2 ring-primary ring-offset-2" : ""}
+          flex items-center gap-6
+        `}
+        >
+          {/* Accent Strip */}
+          <div
+            className={`
+              absolute left-0 top-0 w-1 h-full bg-gradient-to-b 
+              ${variant === "variant-1" ? "from-primary to-secondary" : ""}
+              ${variant === "variant-2" ? "from-secondary to-accent" : ""}
+              ${variant === "variant-3" ? "from-accent to-primary" : ""}
+              ${variant === "variant-4" ? "from-info to-success" : ""}
+              ${variant === "variant-5" ? "from-warning to-error" : ""}
+              ${variant === "variant-6" ? "from-success to-info" : ""}
+              rounded-l-xl
+            `}
+          ></div>
+
+          {/* Icon */}
+          <div className="flex-shrink-0">
+            <div className="p-3 bg-primary/10 text-primary rounded-xl">
+              <BookOpenIcon className="size-6" />
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-start justify-between mb-2">
+              <h3 className="text-xl font-bold text-base-content leading-tight group-hover:text-primary transition-colors duration-300 truncate">
+                {note.title}
+              </h3>
+              <div className="flex items-center gap-4 text-xs text-base-content/60 ml-4">
+                <div className="flex items-center gap-1">
+                  <CalendarIcon className="size-3" />
+                  <span>{formatDate(note.createdAt)}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="font-medium">{getWordCount()}</span>
+                  <span>words</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <ClockIcon className="size-3" />
+                  <span>{getReadingTime()} min</span>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-base-content/70 text-sm leading-relaxed line-clamp-2">
+              {truncateContent(note.content, 200)}
+            </p>
+          </div>
+
+          {/* Actions */}
+          <div
+            className={`
+            flex items-center gap-1 transition-all duration-300
+            ${
+              isHovered
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 translate-x-2"
+            }
+          `}
+          >
+            <button
+              className="p-2 hover:bg-base-300 text-base-content/60 hover:text-base-content rounded-lg transition-all duration-200"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              title="View note"
+            >
+              <EyeIcon className="size-4" />
+            </button>
+
+            <button
+              className={`
+                p-2 hover:bg-error/10 text-base-content/60 hover:text-error rounded-lg transition-all duration-200
+                ${isDeleting ? "animate-pulse" : ""}
+              `}
+              onClick={(e) => handleDelete(e, note._id)}
+              disabled={isDeleting}
+              title="Delete note"
+            >
+              <Trash2Icon className="size-4" />
+            </button>
+          </div>
+        </article>
+      </Link>
+    );
+  }
+
+  // Grid view layout (default)
   return (
     <Link
       to={`/note/${note._id}`}
@@ -83,6 +199,7 @@ const NoteCard = ({ note, setNotes }) => {
         transform transition-all duration-300 ease-out
         hover:scale-[1.02] hover:-translate-y-1
         ${isDeleting ? "opacity-50 scale-95" : ""}
+        ${isSelected ? "ring-2 ring-primary ring-offset-2" : ""}
       `}
       >
         {/* Accent Strip */}
