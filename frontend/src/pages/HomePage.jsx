@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import RateLimitedUI from "../components/RateLimitedUI";
-import StatsPanel from "../components/StatsPanel";
 import axios from "axios";
 import toast from "react-hot-toast";
 import NoteCard from "../components/NoteCard";
@@ -381,20 +380,6 @@ const HomePage = () => {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <div className="stats bg-base-100/50 shadow-lg border border-base-content/10 backdrop-blur-sm">
-                      <div className="stat place-items-center py-4 px-6">
-                        <div className="stat-title text-xs font-medium">
-                          Total Words
-                        </div>
-                        <div className="stat-value text-primary text-2xl">
-                          {notes.reduce(
-                            (acc, note) => acc + note.content.split(" ").length,
-                            0
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
                     <Link
                       to="/create"
                       className="btn btn-primary btn-lg gap-3 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 group rounded-xl"
@@ -570,9 +555,6 @@ const HomePage = () => {
                   </div>
                 )}
               </div>
-
-              {/* Stats Panel */}
-              <StatsPanel notes={notes} searchQuery={searchQuery} />
 
               {/* Notes Grid/List with Enhanced Layout */}
               <div className="relative">
