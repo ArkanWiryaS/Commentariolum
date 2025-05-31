@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import RateLimitedUI from "../components/RateLimitedUI";
+import StatsPanel from "../components/StatsPanel";
 import axios from "axios";
 import toast from "react-hot-toast";
 import NoteCard from "../components/NoteCard";
-import { PlusIcon, BookOpenIcon, SparklesIcon, LoaderIcon } from "lucide-react";
+import {
+  PlusIcon,
+  BookOpenIcon,
+  SparklesIcon,
+  LoaderIcon,
+  SearchIcon,
+  FilterIcon,
+  GridIcon,
+  ListIcon,
+  DownloadIcon,
+  TrashIcon,
+  CopyIcon,
+} from "lucide-react";
 import { Link } from "react-router";
 
 const HomePage = () => {
@@ -12,6 +25,10 @@ const HomePage = () => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("latest");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [viewMode, setViewMode] = useState("grid"); // grid or list
+  const [selectedNotes, setSelectedNotes] = useState([]);
+  const [showBulkActions, setShowBulkActions] = useState(false);
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -36,6 +53,16 @@ const HomePage = () => {
   const getSortedNotes = () => {
     let sortedNotes = [...notes];
 
+    // Filter by search query
+    if (searchQuery.trim()) {
+      sortedNotes = sortedNotes.filter(
+        (note) =>
+          note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          note.content.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    // Sort
     switch (sortBy) {
       case "latest":
         return sortedNotes.sort(
@@ -53,6 +80,117 @@ const HomePage = () => {
         return sortedNotes;
     }
   };
+
+  // Bulk Actions
+  const handleSelectNote = (noteId) => {
+    setSelectedNotes((prev) => {
+      if (prev.includes(noteId)) {
+        return prev.filter((id) => id !== noteId);
+      } else {
+        return [...prev, noteId];
+      }
+    });
+  };
+
+  const handleSelectAll = () => {
+    const visibleNotes = getSortedNotes();
+    if (selectedNotes.length === visibleNotes.length) {
+      setSelectedNotes([]);
+    } else {
+      setSelectedNotes(visibleNotes.map((note) => note._id));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete ${selectedNotes.length} notes?`
+      )
+    )
+      return;
+
+    try {
+      await Promise.all(
+        selectedNotes.map((noteId) =>
+          axios.delete(`http://localhost:5001/api/notes/${noteId}`)
+        )
+      );
+      setNotes((prev) =>
+        prev.filter((note) => !selectedNotes.includes(note._id))
+      );
+      setSelectedNotes([]);
+      setShowBulkActions(false);
+      toast.success(`${selectedNotes.length} notes deleted successfully`);
+    } catch (error) {
+      console.log("Error deleting notes:", error);
+      toast.error("Failed to delete some notes");
+    }
+  };
+
+  // Export functionality
+  const exportNote = (note) => {
+    const content = `# ${note.title}\n\n${
+      note.content
+    }\n\n---\nCreated: ${new Date(
+      note.createdAt
+    ).toLocaleString()}\nUpdated: ${new Date(note.updatedAt).toLocaleString()}`;
+
+    const blob = new Blob([content], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${note.title.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success("Note exported successfully!");
+  };
+
+  const exportAllNotes = () => {
+    const allContent = getSortedNotes()
+      .map(
+        (note) =>
+          `# ${note.title}\n\n${note.content}\n\n---\nCreated: ${new Date(
+            note.createdAt
+          ).toLocaleString()}\nUpdated: ${new Date(
+            note.updatedAt
+          ).toLocaleString()}\n\n`
+      )
+      .join("\n");
+
+    const blob = new Blob([allContent], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `all_notes_${new Date().toISOString().split("T")[0]}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success("All notes exported successfully!");
+  };
+
+  // Duplicate note
+  const duplicateNote = async (note) => {
+    try {
+      const newNote = {
+        title: `${note.title} (Copy)`,
+        content: note.content,
+      };
+      const response = await axios.post(
+        "http://localhost:5001/api/notes",
+        newNote
+      );
+      setNotes((prev) => [response.data, ...prev]);
+      toast.success("Note duplicated successfully!");
+    } catch (error) {
+      console.log("Error duplicating note:", error);
+      toast.error("Failed to duplicate note");
+    }
+  };
+
+  const filteredNotes = getSortedNotes();
 
   return (
     <>
@@ -209,7 +347,7 @@ const HomePage = () => {
             </div>
           )}
 
-          {/* Notes Grid */}
+          {/* Enhanced Filter/Sort/Search Options */}
           {notes.length > 0 && !isRateLimited && (
             <div className="space-y-12">
               {/* Section Header */}
@@ -246,7 +384,7 @@ const HomePage = () => {
                     <div className="stats bg-base-100/50 shadow-lg border border-base-content/10 backdrop-blur-sm">
                       <div className="stat place-items-center py-4 px-6">
                         <div className="stat-title text-xs font-medium">
-                          Total Notes
+                          Total Words
                         </div>
                         <div className="stat-value text-primary text-2xl">
                           {notes.reduce(
@@ -271,71 +409,256 @@ const HomePage = () => {
                 <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-primary/10 to-secondary/10 rounded-full blur-2xl -z-10"></div>
               </div>
 
-              {/* Filter/Sort Options */}
-              <div className="flex flex-wrap items-center justify-between gap-4 p-6 bg-base-100/30 backdrop-blur-sm rounded-xl border border-base-content/10">
-                <div className="flex items-center gap-4">
-                  <span className="text-sm font-medium text-base-content/70">
-                    Sort by:
-                  </span>
-                  <div className="flex gap-2">
+              <div className="space-y-4">
+                {/* Search Bar */}
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <SearchIcon className="h-5 w-5 text-base-content/40" />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search notes by title or content..."
+                    className="w-full pl-12 pr-4 py-3 bg-base-100/50 border-2 border-base-content/10 rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/20 transition-all duration-300 placeholder-base-content/40"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  {searchQuery && (
                     <button
-                      className={`btn btn-sm transition-all duration-200 rounded-xl ${
-                        sortBy === "latest"
-                          ? "btn-primary"
-                          : "btn-ghost hover:btn-outline hover:btn-primary"
-                      }`}
-                      onClick={() => setSortBy("latest")}
+                      onClick={() => setSearchQuery("")}
+                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-base-content/60 hover:text-primary"
                     >
-                      Latest
+                      ×
                     </button>
+                  )}
+                </div>
+
+                {/* Controls Row */}
+                <div className="flex flex-wrap items-center justify-between gap-4 p-6 bg-base-100/30 backdrop-blur-sm rounded-xl border border-base-content/10">
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm font-medium text-base-content/70">
+                      Sort by:
+                    </span>
+                    <div className="flex gap-2">
+                      <button
+                        className={`btn btn-sm transition-all duration-200 rounded-xl ${
+                          sortBy === "latest"
+                            ? "btn-primary"
+                            : "btn-ghost hover:btn-outline hover:btn-primary"
+                        }`}
+                        onClick={() => setSortBy("latest")}
+                      >
+                        Latest
+                      </button>
+                      <button
+                        className={`btn btn-sm transition-all duration-200 rounded-xl ${
+                          sortBy === "oldest"
+                            ? "btn-primary"
+                            : "btn-ghost hover:btn-outline hover:btn-primary"
+                        }`}
+                        onClick={() => setSortBy("oldest")}
+                      >
+                        Oldest
+                      </button>
+                      <button
+                        className={`btn btn-sm transition-all duration-200 rounded-xl ${
+                          sortBy === "a-z"
+                            ? "btn-primary"
+                            : "btn-ghost hover:btn-outline hover:btn-primary"
+                        }`}
+                        onClick={() => setSortBy("a-z")}
+                      >
+                        A-Z
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    {/* View Toggle */}
+                    <div className="flex gap-1 p-1 bg-base-200 rounded-lg">
+                      <button
+                        className={`btn btn-sm transition-all duration-200 ${
+                          viewMode === "grid" ? "btn-primary" : "btn-ghost"
+                        }`}
+                        onClick={() => setViewMode("grid")}
+                      >
+                        <GridIcon className="h-4 w-4" />
+                      </button>
+                      <button
+                        className={`btn btn-sm transition-all duration-200 ${
+                          viewMode === "list" ? "btn-primary" : "btn-ghost"
+                        }`}
+                        onClick={() => setViewMode("list")}
+                      >
+                        <ListIcon className="h-4 w-4" />
+                      </button>
+                    </div>
+
+                    {/* Bulk Actions Toggle */}
                     <button
-                      className={`btn btn-sm transition-all duration-200 rounded-xl ${
-                        sortBy === "oldest"
-                          ? "btn-primary"
-                          : "btn-ghost hover:btn-outline hover:btn-primary"
+                      className={`btn btn-sm transition-all duration-200 ${
+                        showBulkActions ? "btn-secondary" : "btn-ghost"
                       }`}
-                      onClick={() => setSortBy("oldest")}
+                      onClick={() => {
+                        setShowBulkActions(!showBulkActions);
+                        setSelectedNotes([]);
+                      }}
                     >
-                      Oldest
+                      <FilterIcon className="h-4 w-4" />
+                      Select
                     </button>
+
+                    {/* Export Button */}
                     <button
-                      className={`btn btn-sm transition-all duration-200 rounded-xl ${
-                        sortBy === "a-z"
-                          ? "btn-primary"
-                          : "btn-ghost hover:btn-outline hover:btn-primary"
-                      }`}
-                      onClick={() => setSortBy("a-z")}
+                      className="btn btn-sm btn-ghost hover:btn-outline hover:btn-success"
+                      onClick={exportAllNotes}
                     >
-                      A-Z
+                      <DownloadIcon className="h-4 w-4" />
+                      Export All
                     </button>
+
+                    <div className="flex items-center gap-2 text-sm text-base-content/60">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span>
+                        {filteredNotes.length} of {notes.length} notes
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 text-sm text-base-content/60">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span>All notes synced</span>
-                </div>
+                {/* Bulk Actions Bar */}
+                {showBulkActions && (
+                  <div className="p-4 bg-secondary/10 border border-secondary/20 rounded-xl flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <button
+                        className="btn btn-sm btn-outline"
+                        onClick={handleSelectAll}
+                      >
+                        {selectedNotes.length === filteredNotes.length
+                          ? "Deselect All"
+                          : "Select All"}
+                      </button>
+                      <span className="text-sm text-base-content/70">
+                        {selectedNotes.length} selected
+                      </span>
+                    </div>
+
+                    {selectedNotes.length > 0 && (
+                      <div className="flex gap-2">
+                        <button
+                          className="btn btn-sm btn-error"
+                          onClick={handleBulkDelete}
+                        >
+                          <TrashIcon className="h-4 w-4" />
+                          Delete ({selectedNotes.length})
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Search Results Info */}
+                {searchQuery && (
+                  <div className="p-4 bg-primary/10 border border-primary/20 rounded-xl">
+                    <p className="text-sm text-primary">
+                      {filteredNotes.length === 0
+                        ? "No notes found"
+                        : `Found ${filteredNotes.length} note${
+                            filteredNotes.length !== 1 ? "s" : ""
+                          }`}{" "}
+                      matching "{searchQuery}"
+                    </p>
+                  </div>
+                )}
               </div>
 
-              {/* Notes Grid with Enhanced Layout */}
+              {/* Stats Panel */}
+              <StatsPanel notes={notes} searchQuery={searchQuery} />
+
+              {/* Notes Grid/List with Enhanced Layout */}
               <div className="relative">
                 {/* Grid Background Pattern */}
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 rounded-3xl blur-3xl -z-10"></div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 p-1">
-                  {getSortedNotes().map((note, index) => (
-                    <div
-                      key={note._id}
-                      className="transform transition-all duration-500 hover:z-10"
-                      style={{
-                        animationDelay: `${index * 100}ms`,
-                        animation: "fadeInUp 0.6s ease-out forwards",
-                      }}
-                    >
-                      <NoteCard note={note} setNotes={setNotes} />
+                {filteredNotes.length === 0 && searchQuery ? (
+                  // Search Empty State
+                  <div className="text-center py-20">
+                    <div className="max-w-md mx-auto space-y-6">
+                      <SearchIcon className="size-16 text-base-content/40 mx-auto" />
+                      <div className="space-y-2">
+                        <h3 className="text-2xl font-bold text-base-content">
+                          No notes found
+                        </h3>
+                        <p className="text-base-content/70">
+                          Try adjusting your search terms or create a new note.
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setSearchQuery("")}
+                        className="btn btn-primary"
+                      >
+                        Clear Search
+                      </button>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ) : (
+                  <div
+                    className={`grid gap-8 p-1 ${
+                      viewMode === "grid"
+                        ? "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+                        : "grid-cols-1 max-w-4xl mx-auto"
+                    }`}
+                  >
+                    {filteredNotes.map((note, index) => (
+                      <div
+                        key={note._id}
+                        className="transform transition-all duration-500 hover:z-10 relative"
+                        style={{
+                          animationDelay: `${index * 100}ms`,
+                          animation: "fadeInUp 0.6s ease-out forwards",
+                        }}
+                      >
+                        {/* Selection Checkbox */}
+                        {showBulkActions && (
+                          <div className="absolute top-2 left-2 z-20">
+                            <input
+                              type="checkbox"
+                              checked={selectedNotes.includes(note._id)}
+                              onChange={() => handleSelectNote(note._id)}
+                              className="checkbox checkbox-primary"
+                            />
+                          </div>
+                        )}
+
+                        {/* Action Buttons */}
+                        <div className="absolute top-2 right-2 z-20 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={() => duplicateNote(note)}
+                            className="btn btn-xs btn-ghost bg-base-100/80 hover:bg-base-100"
+                            title="Duplicate note"
+                          >
+                            <CopyIcon className="h-3 w-3" />
+                          </button>
+                          <button
+                            onClick={() => exportNote(note)}
+                            className="btn btn-xs btn-ghost bg-base-100/80 hover:bg-base-100"
+                            title="Export note"
+                          >
+                            <DownloadIcon className="h-3 w-3" />
+                          </button>
+                        </div>
+
+                        <div className="group">
+                          <NoteCard
+                            note={note}
+                            setNotes={setNotes}
+                            viewMode={viewMode}
+                            isSelected={selectedNotes.includes(note._id)}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Bottom Inspiration Section */}
