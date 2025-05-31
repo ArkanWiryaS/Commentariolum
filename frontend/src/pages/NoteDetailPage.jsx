@@ -16,15 +16,6 @@ import {
   PenSquareIcon,
 } from "lucide-react";
 import Navbar from "../components/Navbar";
-import {
-  ArrowLeftIcon,
-  LoaderIcon,
-  Trash2Icon,
-  SaveIcon,
-  EditIcon,
-  CalendarIcon,
-  ClockIcon,
-} from "lucide-react";
 
 const NoteDetailPage = () => {
   const [note, setNote] = useState(null);
