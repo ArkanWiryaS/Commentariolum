@@ -9,7 +9,7 @@ import {
 import { Link } from "react-router";
 
 const Navbar = () => {
-  const [currentTheme, setCurrentTheme] = useState("dark");
+  const [currentTheme, setCurrentTheme] = useState("forest");
   const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
 
   const themes = [
@@ -58,7 +58,7 @@ const Navbar = () => {
   ];
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
+    const savedTheme = localStorage.getItem("theme") || "forest";
     setCurrentTheme(savedTheme);
     document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
@@ -92,7 +92,7 @@ const Navbar = () => {
 
               <div className="space-y-0.5 sm:space-y-1">
                 {/* Mobile: Show shorter title */}
-                <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent font-mono tracking-tight">
+                <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-primary via-primary/80 font-mono to-primary bg-clip-text text-transparent tracking-tight">
                   <span className="block sm:hidden">Commentar.</span>
                   <span className="hidden sm:block">Commentariolum</span>
                 </h1>

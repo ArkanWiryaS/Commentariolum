@@ -13,6 +13,10 @@ const noteSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    tanggal : {
+      type : Date,
+      required : false,
+    },
   },
   { timestamps: true } // createdAt, updatedAt
 );

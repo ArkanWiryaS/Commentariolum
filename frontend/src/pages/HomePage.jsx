@@ -247,7 +247,7 @@ const HomePage = () => {
               {/* Hero Text */}
               <div className="space-y-4">
                 <h1 className="text-5xl md:text-6xl font-bold">
-                  <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
                     Your Digital
                   </span>
                   <br />
