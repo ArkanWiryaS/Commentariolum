@@ -23,6 +23,9 @@ import {
   EyeIcon,
   SettingsIcon,
   ChevronDownIcon,
+  BookOpenIcon,
+  PenSquareIcon,
+  SparklesIcon,
 } from "lucide-react";
 import { Link } from "react-router";
 import axios from "axios";
@@ -478,20 +481,164 @@ const HomePage = () => {
       {/* Main Content */}
       <div className="px-4 py-6">
         <div className="max-w-7xl mx-auto">
+          {/* Welcome Section */}
+          <div className="mb-8">
+            <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-3xl p-8 border border-base-content/10 backdrop-blur-sm">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-3 bg-primary/20 rounded-xl">
+                      <BookOpenIcon className="size-8 text-primary" />
+                    </div>
+                    <div>
+                      <h1 className="text-3xl font-bold text-base-content">
+                        Welcome back! 👋
+                      </h1>
+                      <p className="text-base-content/70">
+                        {new Date().toLocaleDateString('en-US', { 
+                          weekday: 'long', 
+                          year: 'numeric', 
+                          month: 'long', 
+                          day: 'numeric' 
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-lg text-base-content/80 max-w-2xl">
+                    Your digital notebook is ready. Capture ideas, organize thoughts, and build your knowledge base.
+                  </p>
+                </div>
+                
+                {/* Quick Create Button */}
+                <div className="flex-shrink-0">
+                  <Link
+                    to="/create"
+                    className="btn btn-primary btn-lg gap-3 shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                  >
+                    <PlusIcon className="size-5" />
+                    Create New Note
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-base-content mb-4 flex items-center gap-2">
+              <SparklesIcon className="size-5 text-primary" />
+              Quick Actions
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Create Note Card */}
+              <Link
+                to="/create"
+                className="group bg-base-100 rounded-2xl p-6 border border-base-content/10 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-primary/10 group-hover:bg-primary/20 rounded-xl transition-colors duration-300">
+                    <PenSquareIcon className="size-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-base-content mb-2">Create Note</h3>
+                    <p className="text-sm text-base-content/70">Start writing a new note or capture an idea</p>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Manage Categories Card */}
+              <button
+                onClick={() => setIsManageCategoriesOpen(true)}
+                className="group bg-base-100 rounded-2xl p-6 border border-base-content/10 hover:border-secondary/30 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] text-left"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-secondary/10 group-hover:bg-secondary/20 rounded-xl transition-colors duration-300">
+                    <SettingsIcon className="size-6 text-secondary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-base-content mb-2">Manage Categories</h3>
+                    <p className="text-sm text-base-content/70">Organize and customize your note categories</p>
+                  </div>
+                </div>
+              </button>
+
+              {/* Export All Card */}
+              <button
+                onClick={exportAllNotes}
+                disabled={notes.length === 0}
+                className="group bg-base-100 rounded-2xl p-6 border border-base-content/10 hover:border-accent/30 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] text-left disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-accent/10 group-hover:bg-accent/20 rounded-xl transition-colors duration-300">
+                    <DownloadIcon className="size-6 text-accent" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-base-content mb-2">Export All Notes</h3>
+                    <p className="text-sm text-base-content/70">Download all your notes as a markdown file</p>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+         
+          {/* Empty State for First Time Users */}
+          {notes.length === 0 && !loading && (
+            <div className="mb-8">
+              <div className="bg-gradient-to-br from-base-100 to-base-200/50 rounded-3xl p-12 border border-base-content/10 text-center">
+                <div className="max-w-md mx-auto">
+                  <div className="text-6xl mb-6">🚀</div>
+                  <h2 className="text-2xl font-bold text-base-content mb-4">
+                    Ready to start your journey?
+                  </h2>
+                  <p className="text-base-content/70 mb-8 leading-relaxed">
+                    Transform your thoughts into organized knowledge. Create your first note and begin building your personal digital library.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Link
+                      to="/create"
+                      className="btn btn-primary gap-2"
+                    >
+                      <PenSquareIcon className="size-4" />
+                      Write Your First Note
+                    </Link>
+                    <button
+                      onClick={() => setIsManageCategoriesOpen(true)}
+                      className="btn btn-outline gap-2"
+                    >
+                      <FolderIcon className="size-4" />
+                      Setup Categories
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Page Header */}
           <div className="mb-8">
+            {/* Section Divider */}
+            <div className="border-t border-base-content/10 mb-8"></div>
+            
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
               {/* Title & Stats */}
               <div>
-                <h1 className="text-3xl font-bold text-base-content mb-2">
+                <h2 className="text-2xl font-bold text-base-content mb-2 flex items-center gap-2">
+                  <FileTextIcon className="size-6 text-primary" />
                   {getSelectedCategoryName()}
-                </h1>
+                </h2>
                 <div className="flex items-center gap-4 text-sm text-base-content/60">
                   <span>{sortedNotes.length} notes</span>
                   {selectedCategory === "all" && (
                     <>
                       <span>•</span>
                       <span>{categories.length} categories</span>
+                    </>
+                  )}
+                  {selectedCategory !== "all" && sortedNotes.length !== notes.length && (
+                    <>
+                      <span>•</span>
+                      <span>Filtered from {notes.length} total</span>
                     </>
                   )}
                 </div>
