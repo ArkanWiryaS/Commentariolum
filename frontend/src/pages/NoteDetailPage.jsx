@@ -11,7 +11,9 @@ import {
   EditIcon,
   CalendarIcon,
   ClockIcon,
+  FolderIcon,
 } from "lucide-react";
+import CategorySelector from "../components/CategorySelector";
 
 const NoteDetailPage = () => {
   const [note, setNote] = useState(null);
@@ -64,7 +66,11 @@ const NoteDetailPage = () => {
     setSaving(true);
 
     try {
-      await api.put(`/notes/${id}`, note);
+      await api.put(`/notes/${id}`, {
+        title: note.title,
+        content: note.content,
+        categoryId: note.categoryId || null,
+      });
       toast.success("Note updated successfully");
       navigate("/");
     } catch (error) {
@@ -153,6 +159,13 @@ const NoteDetailPage = () => {
           {/* Note metadata card */}
           <div className="mb-6 p-6 rounded-2xl bg-base-100/60 backdrop-blur-sm border border-base-content/10 shadow-lg">
             <div className="flex flex-wrap items-center gap-6 text-sm text-base-content/60">
+              {/* Category info */}
+              {note.categoryId && (
+                <div className="flex items-center gap-2">
+                  <FolderIcon className="h-4 w-4 text-accent" />
+                  <span>Category: {note.categoryId.name}</span>
+                </div>
+              )}
               <div className="flex items-center gap-2">
                 <CalendarIcon className="h-4 w-4 text-primary" />
                 <span>Created: {formatDate(note.createdAt)}</span>
@@ -175,6 +188,16 @@ const NoteDetailPage = () => {
           {/* Main editing card */}
           <div className="bg-base-100/70 backdrop-blur-sm rounded-3xl shadow-2xl border border-base-content/10 overflow-hidden">
             <div className="p-8">
+              {/* Category Selector */}
+              <div className="mb-8">
+                <CategorySelector
+                  selectedCategoryId={note.categoryId?._id || null}
+                  onSelectCategory={(categoryId) =>
+                    setNote({ ...note, categoryId })
+                  }
+                />
+              </div>
+
               {/* Title section */}
               <div className="mb-8">
                 <label className="block text-sm font-semibold text-base-content/80 mb-3 flex items-center gap-2">

@@ -13,9 +13,18 @@ const noteSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    categoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      default: null,
+    },
   },
   { timestamps: true } // createdAt, updatedAt
 );
+
+// Index untuk optimasi query
+noteSchema.index({ categoryId: 1 });
+noteSchema.index({ createdAt: -1 });
 
 const Note = mongoose.model("Note", noteSchema);
 

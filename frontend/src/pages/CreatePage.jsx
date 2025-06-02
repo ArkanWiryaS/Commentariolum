@@ -11,10 +11,12 @@ import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import CategorySelector from "../components/CategorySelector";
 
 const CreatePage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [categoryId, setCategoryId] = useState(null);
   const [loading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -26,16 +28,30 @@ const CreatePage = () => {
     }
 
     setIsLoading(true);
+    
+    // Debug: Log the data being sent
+    console.log("Creating note with data:", {
+      title,
+      content,
+      categoryId,
+    });
+    
     try {
-      await axios.post("http://localhost:5001/api/notes", {
+      const response = await axios.post("http://localhost:5001/api/notes", {
         title,
         content,
+        categoryId,
       });
+      
+      // Debug: Log the response
+      console.log("Note created successfully:", response.data);
+      
       toast.success("Note created successfully");
       navigate("/");
     } catch (error) {
+      console.error("Error creating note:", error);
       toast.error("Failed to create note");
-      if (error.response.status === 429) {
+      if (error.response?.status === 429) {
         toast.error("Too many requests, please try again later");
       }
     } finally {
@@ -135,6 +151,12 @@ const CreatePage = () => {
                     </p>
                   </div>
                 </div>
+
+                {/* Category Selector */}
+                <CategorySelector
+                  selectedCategoryId={categoryId}
+                  onSelectCategory={setCategoryId}
+                />
 
                 {/* Title Field */}
                 <div className="space-y-3">
