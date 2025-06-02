@@ -10,7 +10,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import CategorySelector from "../components/CategorySelector";
 
 const CreatePage = () => {
@@ -83,8 +82,6 @@ const CreatePage = () => {
       `}</style>
 
       <div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300">
-        <Navbar />
-
         {/* Hero Section */}
         <div className="relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 pt-12 pb-8">
