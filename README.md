@@ -4,10 +4,13 @@ Aplikasi web modern untuk mencatat dan mengelola catatan pribadi dengan antarmuk
 
 ## Screenshots
 
-![Homepage Coffee Theme](assetsreadme/CoffeeThemeFront1.png)
+![Homepage Coffee Theme](./assetsreadme/CoffeeThemeFront1.png)
+
 _Homepage dengan Coffee Theme - Tampilan daftar catatan_
 
-![HomePage Coffee Theme 2](assetsreadme/CoffeeThemeFront2.png)
+![Create Page Coffee Theme](./assetsreadme/CoffeeThemeFront2.png)
+
+_Halaman pembuatan catatan baru dengan Coffee Theme_
 
 ## Overview
 
