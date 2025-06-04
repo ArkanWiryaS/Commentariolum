@@ -104,8 +104,8 @@ const Navbar = ({
       name: "lofi",
       label: "🎵 Lo-fi",
       description: "Chill vibes",
-      accent: "bg-indigo-500",
-      preview: "bg-white-950 border-indigo-700",
+      accent: "bg-[#000000]",
+      preview: "bg-white-950 border-black-700",
       category: "Light"
     },
     {
