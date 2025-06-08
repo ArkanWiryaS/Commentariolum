@@ -107,7 +107,7 @@ const CreatePage = () => {
               {/* Hero Text */}
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl font-bold">
-                  <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
                     Create New Note
                   </span>
                 </h1>
@@ -229,8 +229,6 @@ const CreatePage = () => {
                           <span>Create Note</span>
                         </>
                       )}
-
-                      {/* Button Shine Effect */}
                     </button>
                   </div>
                 </div>

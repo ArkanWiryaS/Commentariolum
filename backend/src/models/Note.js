@@ -17,6 +17,9 @@ const noteSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       default: null,
+    tanggal : {
+      type : Date,
+      required : false,
     },
   },
   { timestamps: true } // createdAt, updatedAt
