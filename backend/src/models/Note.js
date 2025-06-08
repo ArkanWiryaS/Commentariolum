@@ -17,12 +17,14 @@ const noteSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
       default: null,
-    tanggal : {
-      type : Date,
-      required : false,
+    },
+    tanggal: {
+      type: Date,
+      required: false,
     },
   },
-  { timestamps: true } // createdAt, updatedAt
+  { timestamps: true }
+  // createdAt, updatedAt
 );
 
 // Index untuk optimasi query
