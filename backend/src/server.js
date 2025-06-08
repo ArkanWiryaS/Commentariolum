@@ -5,36 +5,30 @@ import { connectDB } from "./config/db.js";
 import dotenv from "dotenv";
 import rateLimiter from "./middleware/rateLimiter.js";
 import cors from "cors";
-import path from "path";
 
 dotenv.config();
 
 console.log(process.env.MONGO_URI);
 const app = express();
-const PORT = process.env.PORT || 5001;
-const __dirname = path.resolve();
+const PORT = process.env.PORT;
 
 // middleware
-if (process.env.NODE_ENV !== "production") {
-  app.use(express.json()); // middleware ini untuk parse json bodies : req.body
-  app.use(
-    cors({
-      origin: "http://localhost:5173",
-    })
-  );
-}
-
+app.use(express.json()); // middleware ini untuk parse json bodies : req.body
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 app.use(rateLimiter);
+
+// app.use((req, res, next) => {
+//   console.log(`Req Method is ${req.method} and URL is ${req.url}`);
+//   next();
+// });
 
 app.use("/api/notes", notesRoutes);
 app.use("/api/categories", categoryRoutes);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
-  });
-}
 connectDB().then(() => {
   app.listen(PORT, () => {
     console.log("Server is running on PORT : ", PORT);
