@@ -27,24 +27,24 @@ const CreatePage = () => {
     }
 
     setIsLoading(true);
-    
+
     // Debug: Log the data being sent
     console.log("Creating note with data:", {
       title,
       content,
       categoryId,
     });
-    
+
     try {
-      const response = await axios.post("http://localhost:5001/api/notes", {
+      const response = await axios.post("https://202.74.74.144/api/notes", {
         title,
         content,
         categoryId,
       });
-      
+
       // Debug: Log the response
       console.log("Note created successfully:", response.data);
-      
+
       toast.success("Note created successfully");
       navigate("/");
     } catch (error) {

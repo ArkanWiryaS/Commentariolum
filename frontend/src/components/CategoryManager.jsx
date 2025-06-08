@@ -13,7 +13,11 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 
-const CategoryManager = ({ categories: initialCategories, onClose, onCategoryChange }) => {
+const CategoryManager = ({
+  categories: initialCategories,
+  onClose,
+  onCategoryChange,
+}) => {
   const [categories, setCategories] = useState(initialCategories || []);
   const [loading, setLoading] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -70,7 +74,7 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
       let response;
       if (editingId) {
         response = await axios.put(
-          `http://localhost:5001/api/categories/${editingId}`,
+          `https://202.74.74.144/api/categories/${editingId}`,
           formData
         );
         setCategories((prev) =>
@@ -79,7 +83,7 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
         toast.success("Category updated successfully");
       } else {
         response = await axios.post(
-          "http://localhost:5001/api/categories",
+          "https://202.74.74.144/api/categories",
           formData
         );
         setCategories((prev) => [response.data, ...prev]);
@@ -90,9 +94,7 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
       onCategoryChange?.();
     } catch (error) {
       console.error("Error saving category:", error);
-      toast.error(
-        error.response?.data?.message || "Failed to save category"
-      );
+      toast.error(error.response?.data?.message || "Failed to save category");
     }
   };
 
@@ -117,7 +119,7 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
     }
 
     try {
-      await axios.delete(`http://localhost:5001/api/categories/${categoryId}`);
+      await axios.delete(`https://202.74.74.144/api/categories/${categoryId}`);
       setCategories((prev) => prev.filter((cat) => cat._id !== categoryId));
       toast.success("Category deleted successfully");
       onCategoryChange?.();
@@ -139,7 +141,7 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
   const getCategoryColorClass = (color) => {
     const colorMap = {
       primary: "bg-primary/10 text-primary border-primary/20",
-      secondary: "bg-secondary/10 text-secondary border-secondary/20", 
+      secondary: "bg-secondary/10 text-secondary border-secondary/20",
       accent: "bg-accent/10 text-accent border-accent/20",
       info: "bg-info/10 text-info border-info/20",
       success: "bg-success/10 text-success border-success/20",
@@ -231,7 +233,11 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className={`p-2 rounded-lg ${getCategoryColorClass(category.color)}`}>
+                            <div
+                              className={`p-2 rounded-lg ${getCategoryColorClass(
+                                category.color
+                              )}`}
+                            >
                               <IconComponent className="size-5" />
                             </div>
                             <div>
@@ -257,7 +263,9 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
                               <PenSquareIcon className="size-4" />
                             </button>
                             <button
-                              onClick={() => handleDelete(category._id, category.name)}
+                              onClick={() =>
+                                handleDelete(category._id, category.name)
+                              }
                               className="btn btn-ghost btn-sm text-error hover:bg-error hover:text-error-content"
                               title="Delete category"
                             >
@@ -280,10 +288,7 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
                 <h3 className="text-lg font-semibold text-base-content">
                   {editingId ? "Edit Category" : "Create Category"}
                 </h3>
-                <button
-                  onClick={resetForm}
-                  className="btn btn-ghost btn-sm"
-                >
+                <button onClick={resetForm} className="btn btn-ghost btn-sm">
                   <XIcon className="size-4" />
                 </button>
               </div>
@@ -310,7 +315,9 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
                   {/* Description Field */}
                   <div>
                     <label className="label">
-                      <span className="label-text font-medium">Description</span>
+                      <span className="label-text font-medium">
+                        Description
+                      </span>
                     </label>
                     <textarea
                       placeholder="Category description (optional)"
@@ -318,7 +325,10 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
                       rows={3}
                       value={formData.description}
                       onChange={(e) =>
-                        setFormData({ ...formData, description: e.target.value })
+                        setFormData({
+                          ...formData,
+                          description: e.target.value,
+                        })
                       }
                     />
                   </div>
@@ -348,7 +358,9 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
                           <div
                             className={`w-6 h-6 rounded-full mx-auto ${color.class}`}
                           ></div>
-                          <span className="text-xs mt-1 block">{color.label}</span>
+                          <span className="text-xs mt-1 block">
+                            {color.label}
+                          </span>
                         </button>
                       ))}
                     </div>
@@ -406,4 +418,4 @@ const CategoryManager = ({ categories: initialCategories, onClose, onCategoryCha
   );
 };
 
-export default CategoryManager; 
+export default CategoryManager;

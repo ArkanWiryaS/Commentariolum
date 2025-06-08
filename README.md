@@ -152,7 +152,7 @@ npm start
 ### Base URL
 
 ```
-Development: http://localhost:5001/api
+Development: https://202.74.74.144/api
 Production: https://your-domain.com/api
 ```
 

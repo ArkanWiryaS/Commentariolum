@@ -35,10 +35,10 @@ const NoteCard = ({
   const handleDelete = async (e, id) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (window.confirm("Are you sure you want to delete this note?")) {
       try {
-        await axios.delete(`http://localhost:5001/api/notes/${id}`);
+        await axios.delete(`https://202.74.74.144/api/notes/${id}`);
         setNotes((prevNotes) => prevNotes.filter((note) => note._id !== id));
         toast.success("Note deleted successfully");
       } catch (error) {
@@ -75,17 +75,17 @@ const NoteCard = ({
 
   const getCategoryInfo = () => {
     if (!note.categoryId) return null;
-    
+
     const categoryName = getCategoryName(note.categoryId);
     const categoryIcon = getCategoryIcon(note.categoryId);
     const categoryColorClass = getCategoryColorClass(note.categoryId);
-    
+
     if (!categoryName) return null;
-    
+
     return {
       name: categoryName,
       icon: categoryIcon,
-      colorClass: categoryColorClass
+      colorClass: categoryColorClass,
     };
   };
 
@@ -109,7 +109,9 @@ const NoteCard = ({
       {/* Category Badge */}
       {categoryInfo && (
         <div className="flex items-center gap-2 mb-3">
-          <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${categoryInfo.colorClass}`}>
+          <div
+            className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${categoryInfo.colorClass}`}
+          >
             {categoryInfo.icon}
             <span>{categoryInfo.name}</span>
           </div>
@@ -169,7 +171,7 @@ const NoteCard = ({
             <CopyIcon className="size-3" />
           </button>
         </div>
-        
+
         <button
           onClick={(e) => handleDelete(e, note._id)}
           className="btn btn-xs btn-ghost text-base-content/60 hover:text-error"
