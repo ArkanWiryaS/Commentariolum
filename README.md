@@ -12,7 +12,7 @@
 
 *Detail tampilan form pembuatan catatan dengan category selector dan rich editor*
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend Infrastructure
 - **Node.js** 
