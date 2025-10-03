@@ -1,23 +1,23 @@
 import express from "express";
 import {
-  createCategory,
-  deleteCategory,
   getAllCategories,
-  updateCategory,
   getCategoryById,
-  getNotesByCategory,
+  createCategory,
+  updateCategory,
+  deleteCategory,
 } from "../controllers/categoryController.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
+// Public routes
 router.get("/", getAllCategories);
 router.get("/:id", getCategoryById);
-router.get("/:id/notes", getNotesByCategory);
 
-router.post("/", createCategory);
+// Protected routes (admin only)
+router.post("/", protect, createCategory);
+router.put("/:id", protect, updateCategory);
+router.delete("/:id", protect, deleteCategory);
 
-router.put("/:id", updateCategory);
+export default router;
 
-router.delete("/:id", deleteCategory);
-
-export default router; 

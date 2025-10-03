@@ -1,94 +1,85 @@
-# Commentariolum 
+# 🎓 SNBT Tryout System
 
-## Screenshots
+Sistem tryout online lengkap untuk persiapan SNBT (Seleksi Nasional Berdasarkan Tes). Dibangun untuk keperluan marketing bimbel ke sekolah-sekolah.
 
-### Homepage dengan Cupcake Theme (No Notes)
-<img src="./readmeAssets/HomePage(Cupcakes)(NoNotes).png" alt="Homepage Cupcakes Theme No Notes" width="100%">
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![License](https://img.shields.io/badge/license-ISC-green)
 
-*Empty state homepage dengan Cupcake theme - Tampilan ketika belum ada catatan*
+## 📸 Screenshots
 
-### Create Page - Form Interface
-<img src="./readmeAssets/http___localhost_5173_create.png" alt="Create Page Form" width="100%">
+[Coming soon - Add screenshots here]
 
-*Detail tampilan form pembuatan catatan dengan category selector dan rich editor*
+## ✨ Features
 
-## Tech Stack
+### 👨‍🎓 Student Features
+- ✅ **Pendaftaran Tanpa Password** - Siswa cukup input nama, kelas, sekolah, dll
+- ✅ **Multiple Test Categories** - TPS, Literasi (dengan sub-kategori)
+- ✅ **Real-time Timer** - Timer countdown dengan auto-submit
+- ✅ **Interactive Interface** - Navigasi soal yang intuitif
+- ✅ **Mark for Review** - Tandai soal untuk direview nanti
+- ✅ **Instant Results** - Hasil langsung dengan pembahasan
+- ✅ **Detailed Analysis** - Lihat jawaban benar/salah dengan pembahasan
 
-### Backend Infrastructure
-- **Node.js** 
-- **Express.js**
-- **MongoDB** 
-- **Mongoose** 
-- **Upstash Redis** 
-- **CORS** 
-- **dotenv** 
+### 👨‍💼 Admin Features
+- ✅ **Secure Login** - JWT authentication
+- ✅ **Dashboard Analytics** - Statistics lengkap
+- ✅ **Category Management** - CRUD categories & sub-categories
+- ✅ **Question Bank** - Kelola soal dengan form lengkap
+- ✅ **Results Monitoring** - View & export hasil test
+- ✅ **CSV Export** - Export data untuk analisis Excel
+- ✅ **Performance Tracking** - Top performers & statistics
 
-### Frontend Technologies
-- **React 19** 
-- **Vite** 
-- **React Router v7** 
-- **Tailwind CSS** 
-- **DaisyUI** 
-- **Lucide React** 
-- **Axios** 
-- **React Hot Toast** 
-
-
-## 📁 Project Structure
+## 🏗️ Architecture
 
 ```
 Commentariolum/
-├── 📂 backend/                    # Server-side application
-│   ├── 📂 src/
-│   │   ├── 📂 config/            # Database & Redis configuration
-│   │   │   ├── db.js            
-│   │   │   └── upstash.js        
-│   │   ├── 📂 controllers/       # Business logic & API handlers
-│   │   │   ├── notesController.js    
-│   │   │   └── categoryController.js 
-│   │   ├── 📂 middleware/        # middleware
-│   │   │   └── rateLimiter.js    
-│   │   ├── 📂 models/            # Database schemas
-│   │   │   ├── Note.js           
-│   │   │   └── Category.js       
-│   │   ├── 📂 routes/            # API route definitions
-│   │   │   ├── notesRoutes.js    
-│   │   │   └── categoryRoutes.js 
-│   └── package.json              # Backend dependencies
-│   │   └── server.js             # Express server entry point
-├── 📂 frontend/                   # Client-side application
-│   ├── 📂 src/
-│   │   ├── 📂 components/        # Reusable React components
-│   │   │   ├── Navbar.jsx        
-│   │   │   ├── NoteCard.jsx      
-│   │   │   ├── CategoryManager.jsx 
-│   │   │   ├── CategorySelector.jsx 
-│   │   │   ├── NotesNotFound.jsx 
-│   │   │   └── RateLimitedUI.jsx 
-│   │   ├── 📂 pages/             # Page components
-│   │   │   ├── HomePage.jsx      
-│   │   │   ├── CreatePage.jsx    
-│   │   │   └── NoteDetailPage.jsx 
-│   │   ├── 📂 lib/               # Utility libraries
-│   │   │   ├── axios.js          
-│   │   │   └── utils.js          
-│   │   ├── App.jsx               # Root component with routing
-│   │   └── main.jsx              # Application entry point
-│   ├── tailwind.config.js        
-│   ├── vite.config.js            
-│   └── package.json              
-├── 📂 readmeAssets/              # Documentation screenshots
-├── 📂 assetsReadme/              # Additional documentation images
-└── README.md                     # Project documentation
+├── backend/              # Node.js + Express API
+│   ├── src/
+│   │   ├── models/      # MongoDB schemas
+│   │   ├── controllers/ # Business logic
+│   │   ├── routes/      # API routes
+│   │   ├── middleware/  # Auth & rate limiting
+│   │   └── config/      # Database & Redis config
+│   └── package.json
+│
+├── frontend/            # React + Vite
+│   ├── src/
+│   │   ├── pages/      # Page components
+│   │   ├── components/ # Reusable components
+│   │   ├── context/    # Auth context
+│   │   └── utils/      # Helpers & API
+│   └── package.json
+│
+└── README.md
 ```
 
-## Installation & Setup
+## 🚀 Tech Stack
+
+### Backend
+- **Node.js** - JavaScript runtime
+- **Express** - Web framework
+- **MongoDB** - Database
+- **Mongoose** - ODM
+- **JWT** - Authentication
+- **Bcrypt** - Password hashing
+- **Upstash Redis** - Rate limiting
+
+### Frontend
+- **React 19** - UI library
+- **Vite** - Build tool
+- **React Router** - Routing
+- **TailwindCSS** - Styling
+- **DaisyUI** - Component library
+- **Axios** - HTTP client
+- **Lucide React** - Icons
+- **React Hot Toast** - Notifications
+
+## 📦 Installation
 
 ### Prerequisites
-- **Node.js** v16 atau lebih tinggi
-- **MongoDB** database (local atau cloud seperti MongoDB Atlas)
-- **Upstash Redis** account untuk rate limiting
-- **Git** untuk version control
+- Node.js v16+ 
+- MongoDB (local atau MongoDB Atlas)
+- Upstash Redis account
 
 ### 1. Clone Repository
 ```bash
@@ -96,290 +87,252 @@ git clone https://github.com/ArkanWiryaS/Commentariolum.git
 cd Commentariolum
 ```
 
-### 2. Environment Configuration
-Buat file `.env` di dalam folder `backend/` dengan konfigurasi berikut:
+### 2. Backend Setup
+```bash
+cd backend
+npm install
 
+# Create .env file
+cp .env.example .env
+# Edit .env dengan konfigurasi Anda
+
+# Create admin account
+npm run create-admin
+
+# Start backend
+npm run dev
+```
+
+Backend akan berjalan di `http://localhost:5001`
+
+### 3. Frontend Setup
+```bash
+cd frontend
+npm install
+
+# Start frontend
+npm run dev
+```
+
+Frontend akan berjalan di `http://localhost:5173`
+
+## ⚙️ Configuration
+
+### Backend .env
 ```env
-# Database Configuration
-MONGO_URI=your_mongodb_connection_string
+# Database
+MONGO_URI=mongodb://localhost:27017/snbt-tryout
+# atau MongoDB Atlas: mongodb+srv://username:password@cluster.mongodb.net/database
 
-# Server Configuration  
+# Server
 PORT=5001
 NODE_ENV=development
 
-# Redis Configuration (Upstash)
-UPSTASH_REDIS_REST_URL=your_upstash_redis_url
-UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token
+# JWT
+JWT_SECRET=your-super-secret-jwt-key-change-this
+
+# Redis (Upstash)
+UPSTASH_REDIS_REST_URL=https://your-redis.upstash.io
+UPSTASH_REDIS_REST_TOKEN=your-redis-token
 ```
 
-### 3. Install Dependencies
+### Database Structure
+
+**7 Collections:**
+1. **admins** - Admin users dengan encrypted password
+2. **categories** - Kategori utama (TPS, Literasi)
+3. **subcategories** - Sub-kategori dengan timer & jumlah soal
+4. **questions** - Bank soal dengan 5 pilihan jawaban
+5. **students** - Data siswa (nama, kelas, sekolah, dll)
+6. **testsessions** - Session test dengan status & scoring
+7. **answers** - Jawaban siswa untuk setiap soal
+
+## 🎮 Usage
+
+### For Students
+1. Buka `http://localhost:5173`
+2. Klik "Mulai Tryout"
+3. Isi form pendaftaran
+4. Pilih jenis test
+5. Kerjakan soal (timer akan berjalan otomatis)
+6. Klik "Selesai Mengerjakan" atau tunggu timer habis
+7. Lihat hasil & pembahasan
+
+### For Admin
+1. Buka `http://localhost:5173/admin/login`
+2. Login (default: admin/admin123)
+3. **Dashboard** - Lihat statistics
+4. **Kelola Kategori** - Tambah TPS, Literasi, dll
+5. **Kelola Soal** - Input soal tryout
+6. **Lihat Hasil** - Monitor & export hasil siswa
+
+## 📊 API Endpoints
+
+### Public (No Auth)
+```
+POST   /api/students              # Register student
+POST   /api/test-sessions/start   # Start test
+GET    /api/test-sessions/:id     # Get session
+PUT    /api/test-sessions/:id/answer  # Save answer
+POST   /api/test-sessions/:id/submit  # Submit test
+GET    /api/test-sessions/:id/results # Get results
+```
+
+### Protected (Admin Only)
+```
+POST   /api/auth/login            # Admin login
+GET    /api/categories            # Get categories
+POST   /api/categories            # Create category
+GET    /api/questions             # Get questions
+POST   /api/questions             # Create question
+POST   /api/questions/bulk        # Bulk import
+GET    /api/test-sessions         # Get all sessions
+GET    /api/students/stats        # Get statistics
+```
+
+Full API documentation: `backend/API_DOCUMENTATION.md`
+
+## 🎯 Features Highlight
+
+### Tryout Interface (Seperti Gambar yang Diminta)
+- ✅ Timer di kanan atas
+- ✅ Display soal dengan options A-E
+- ✅ Navigasi grid nomor soal
+- ✅ Color coding (hijau=dijawab, kuning=ditandai, abu=kosong)
+- ✅ Button "Selesai Mengerjakan"
+- ✅ Mark for review functionality
+
+### Scoring System
+- **Otomatis** - Langsung dihitung saat submit
+- **Transparent** - Benar, salah, kosong
+- **Percentage based** - Skor dari 0-100
+- **Time tracking** - Durasi pengerjaan dicatat
+
+### Data yang Disimpan
+Setiap test session mencatat:
+- Nama, kelas, asal sekolah, tujuan PTN
+- Email & nomor HP
+- Soal yang dikerjakan & jawaban
+- Waktu mulai & selesai
+- Total benar, salah, kosong
+- Skor akhir
+
+## 🚢 Deployment
+
+### Backend (Railway/Render/Heroku)
+1. Push code ke GitHub
+2. Connect repository di platform
+3. Set environment variables
+4. Deploy!
+
+### Frontend (Vercel/Netlify)
+1. Connect GitHub repository
+2. Build command: `npm run build`
+3. Output directory: `dist`
+4. Deploy!
+
+### MongoDB Atlas
+1. Create free cluster
+2. Whitelist IP: 0.0.0.0/0 (allow all)
+3. Copy connection string ke MONGO_URI
+
+### Upstash Redis
+1. Create free database
+2. Copy REST URL & TOKEN
+
+## 🔒 Security
+
+- ✅ Password hashing dengan bcrypt
+- ✅ JWT token authentication
+- ✅ Rate limiting (100 req/60s)
+- ✅ CORS configuration
+- ✅ Input validation
+- ✅ MongoDB injection prevention
+
+## 📈 Performance
+
+- ✅ MongoDB indexing untuk query cepat
+- ✅ Redis caching untuk rate limit
+- ✅ Vite untuk fast build
+- ✅ Code splitting ready
+- ✅ Lazy loading images
+
+## 🐛 Troubleshooting
+
+### Backend tidak bisa start
 ```bash
-# Install semua dependencies secara otomatis
-npm run build
+# Check MongoDB connection
+# Pastikan MongoDB service running
+# Check .env MONGO_URI
 
-# Atau install manual step by step
-npm install --prefix backend
-npm install --prefix frontend
+# Check port 5001
+# Pastikan tidak ada service lain di port 5001
 ```
 
-### 4. Development Mode
+### Frontend tidak bisa fetch data
 ```bash
-# Terminal 1: Start backend server (dengan nodemon hot reload)
-cd backend
-npm run dev
-
-# Terminal 2: Start frontend development server (dengan Vite HMR)
-cd frontend  
-npm run dev
+# Check backend berjalan di http://localhost:5001
+# Check Network tab di browser DevTools
+# Pastikan CORS tidak block request
 ```
 
-**Access URLs:**
-- Frontend: `http://localhost:5173`
-- Backend API: `http://localhost:5001`
-
-### 5. Production Deployment
+### Rate limit error
 ```bash
-# Build aplikasi untuk production
-npm run build
-
-# Start production server
-npm start
+# Check Upstash Redis credentials
+# Verify rate limit configuration di rateLimiter.js
 ```
 
-## 🔗 API Documentation
+## 📝 Default Credentials
 
-### Base URL
-```
-Development: http://localhost:5001/api
-Production: https://your-domain.com/api
-```
+**Admin Login:**
+- Username: `admin`
+- Password: `admin123`
 
-### Notes Endpoints
+⚠️ **PENTING:** Ganti password setelah first login!
 
-| Method | Endpoint | Description | Request Body | Response |
-|--------|----------|-------------|--------------|----------|
-| `GET` | `/api/notes` | Get all notes with category info | - | Array of notes |
-| `GET` | `/api/notes/:id` | Get specific note by ID | - | Single note object |
-| `POST` | `/api/notes` | Create new note | `{title, content, categoryId?}` | Created note |
-| `PUT` | `/api/notes/:id` | Update existing note | `{title?, content?, categoryId?}` | Updated note |
-| `DELETE` | `/api/notes/:id` | Delete note | - | Success message |
+## 🎨 Customization
 
-### Categories Endpoints
-
-| Method | Endpoint | Description | Request Body | Response |
-|--------|----------|-------------|--------------|----------|
-| `GET` | `/api/categories` | Get all categories | - | Array of categories |
-| `GET` | `/api/categories/:id` | Get specific category | - | Single category |
-| `GET` | `/api/categories/:id/notes` | Get notes by category | - | Array of notes |
-| `POST` | `/api/categories` | Create new category | `{name, description?, color?, icon?}` | Created category |
-| `PUT` | `/api/categories/:id` | Update category | `{name?, description?, color?, icon?}` | Updated category |
-| `DELETE` | `/api/categories/:id` | Delete category | - | Success message |
-
-### Request/Response Examples
-
-#### Create Note
+### Change Theme
+Edit `frontend/src/App.jsx`:
 ```javascript
-// POST /api/notes
-{
-  "title": "My First Note",
-  "content": "This is the content of my note...",
-  "categoryId": "64a7b8c9d1e2f3g4h5i6j7k8" // Optional
-}
-
-// Response
-{
-  "_id": "64a7b8c9d1e2f3g4h5i6j7k9",
-  "title": "My First Note",
-  "content": "This is the content of my note...",
-  "categoryId": {
-    "_id": "64a7b8c9d1e2f3g4h5i6j7k8",
-    "name": "Personal",
-    "color": "primary",
-    "icon": "folder"
-  },
-  "createdAt": "2024-01-01T00:00:00.000Z",
-  "updatedAt": "2024-01-01T00:00:00.000Z"
-}
+const [currentTheme, setCurrentTheme] = useState("coffee");
+// Ganti "coffee" dengan theme lain: dark, light, cupcake, dll
 ```
 
-#### Error Response
-```javascript
-{
-  "message": "Note not found", // Error description
-  "status": 404               // HTTP status code
-}
-```
-
-## 🏗️ Architecture & Design Patterns
-
-### Backend Architecture
-```
-📦 MVC Pattern Implementation
-├──  Models (MongoDB + Mongoose)
-│   ├── Data validation & schema definition
-│   ├── Database indexing for performance
-│   └── Relationship management (Note ↔ Category)
-├──  Controllers (Business Logic)
-│   ├── CRUD operations dengan error handling
-│   ├── Data validation & sanitization
-│   └── Response formatting & status codes
-├──  Routes (API Endpoints)
-│   ├── RESTful API design
-│   ├── HTTP method conventions
-│   └── URL parameter handling
-└──  Middleware Stack
-    ├── CORS configuration
-    ├── JSON body parsing
-    ├── Rate limiting dengan Redis
-    └── Error handling middleware
-```
-
-### Frontend Architecture
-```
-Component-Based Architecture
-├──  Pages (Route Components)
-│   ├── HomePage - Main dashboard dengan advanced filtering
-│   ├── CreatePage - Note creation dengan live preview
-│   └── NoteDetailPage - View/edit individual notes
-├──  Components (Reusable UI)
-│   ├── Navbar - Navigation dengan theme switcher
-│   ├── NoteCard - Individual note display dengan actions
-│   ├── CategoryManager - CRUD interface untuk categories
-│   └── Utility Components (Loading, Empty states, etc.)
-├──  Styling Strategy
-│   ├── Tailwind CSS untuk utility-first approach
-│   ├── DaisyUI untuk consistent component design
-│   └── Custom CSS untuk specific animations
-└──  State Management
-    ├── React Hooks untuk local state
-    ├── Prop drilling untuk component communication
-    └── LocalStorage untuk persistence (themes, etc.)
-```
-
-### Database Schema Design
-```javascript
-// Note Schema dengan optimizations
-{
-  title: { type: String, required: true },
-  content: { type: String, required: true },
-  categoryId: { 
-    type: ObjectId, 
-    ref: 'Category',
-    index: true  // Indexed untuk fast queries
-  },
-  tanggal: { type: Date },
-  timestamps: true  // Auto createdAt/updatedAt
-}
-
-// Category Schema dengan constraints
-{
-  name: { 
-    type: String, 
-    required: true, 
-    maxLength: 50,
-    index: true  // Indexed untuk search
-  },
-  description: { type: String, maxLength: 200 },
-  color: { 
-    type: String, 
-    enum: ['primary', 'secondary', 'accent', ...],
-    default: 'primary'
-  },
-  icon: { type: String, default: 'Folder' },
-  noteCount: { type: Number, default: 0 }  // Denormalized untuk performance
-}
-```
-
-### Development Workflow
-```bash
-# Development setup
-npm run dev          # Start both frontend & backend
-npm run lint         # Check code quality
-npm run build        # Production build
-npm run preview      # Preview production build
-
-# Backend specific
-cd backend
-npm run dev          # Start dengan nodemon
-npm start            # Production start
-
-# Frontend specific  
-cd frontend
-npm run dev          # Vite dev server
-npm run build        # Build untuk production
-npm run preview      # Preview build results
-```
+### Add New Test Category
+1. Login as admin
+2. Go to "Kelola Kategori"
+3. Add category (e.g., "Tes Literasi")
+4. Add sub-category dengan timer & jumlah soal
+5. Add questions via "Kelola Soal"
 
 ## 🤝 Contributing
 
-### Development Guidelines
-1. **Fork** repository ini
-2. **Create** feature branch (`git checkout -b feature/AmazingFeature`)
-3. **Commit** changes dengan descriptive messages
-4. **Push** ke branch (`git push origin feature/AmazingFeature`)
-5. **Open** Pull Request dengan detailed description
-
-
-### Common Issues & Solutions
-
-#### MongoDB Connection Issues
-```bash
-# Error: MongoDB connection failed
-# Solutions:
-1. Check if MongoDB service is running
-2. Verify MONGO_URI in .env file
-3. Check network access (if using MongoDB Atlas)
-4. Ensure database user has proper permissions
-```
-
-#### Redis Rate Limiting Issues
-```bash
-# Error: Redis connection failed
-# Solutions:
-1. Verify Upstash Redis credentials in .env
-2. Check UPSTASH_REDIS_REST_URL format
-3. Ensure UPSTASH_REDIS_REST_TOKEN is correct
-4. Reset Redis keys if rate limit stuck
-```
-
-#### Frontend Connection Issues
-```bash
-# Error: Cannot connect to backend
-# Solutions:
-1. Ensure backend is running on port 5001
-2. Check CORS configuration in server.js
-3. Verify API endpoints are correct
-4. Check browser console for specific errors
-```
-
-#### Build Issues
-```bash
-# Error: Vite build fails
-# Solutions:
-1. Clear node_modules and reinstall dependencies
-2. Check for ESLint errors and fix them
-3. Ensure all imports are correct
-4. Verify Tailwind CSS configuration
-```
+1. Fork repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
 ## 📄 License
 
-This project is licensed under the **ISC License**. See the [LICENSE](LICENSE) file for details.
+ISC License - see LICENSE file
 
 ## 👨‍💻 Author
 
 **ArkanWiryaS**
 - GitHub: [@ArkanWiryaS](https://github.com/ArkanWiryaS)
 - Repository: [Commentariolum](https://github.com/ArkanWiryaS/Commentariolum)
-- Email: [Contact Developer](mailto:arkanwiryas@gmail.com)
+
+## 🙏 Acknowledgments
+
+- DaisyUI untuk beautiful components
+- MongoDB untuk flexible database
+- Upstash untuk serverless Redis
+- Vite untuk blazing fast dev experience
 
 ---
 
-<div align="center">
-  <p><strong>Built with ❤️ </strong></p>
-  <p>
-    <a href="#commentariolum-">⬆️ Back to Top</a> •
-    <a href="https://github.com/ArkanWiryaS/Commentariolum/issues">🐛 Report Bug</a> •
-    <a href="https://github.com/ArkanWiryaS/Commentariolum/discussions">💬 Request Feature</a>
-  </p>
-</div>
+**Built for SNBT preparation & bimbel marketing** 🎓
+
+Need help? Create an issue atau hubungi maintainer!
